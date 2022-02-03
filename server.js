@@ -1,10 +1,15 @@
-const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const express = require('express');
+const { animals } = require('./data/animals');
+
 const PORT = process.env.PORT || 3001;
-//add express to app varialbe so we can later chain on methods to the express server
 const app = express();
-const { animals } = require('./data/animals.json');
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.static('public'));
+
 
 function filterByQuery(query, animalsArray) {
     let personalityTraitsArray = [];
@@ -118,6 +123,24 @@ app.use(express.urlencoded({ extended: true }));
 
 // parse incoming JSON data
 app.use(express.json());
+
+// route to the server - respond with an HTML page to display in the browser
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/index.html'));
+});
+
+app.get('/animals', (req,res) => {
+  res.sendFile(path.join(__dirname, './public/animals.html'));
+});
+
+app.get('/zookeepers', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/zookeepers.html'));
+});
+
+//* means any route not previously defined will fall under this request
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/index.html'));
+});
 
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`);
