@@ -20,5 +20,8 @@
   "homepage": "https://github.com/daniellefortin2021/zoo-keeper#readme",
   "dependencies": {
     "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "jest": "^27.4.7"
   }
 }
